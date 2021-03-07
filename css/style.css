@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    /* min-height: 100vh; */
+    background-image: url(/images/back.jpg);
+    background-size: cover;
+    background-position: center;
+    top: center;
+}
+
+.wrapper {
+    width: 1000px;
+    height: 300px;
+    position: relative;
+    margin: 100px auto 0px;
+    background-color: #fff;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+}
+
+#target,
+#remainingCount,
+#result {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+#target,
+#result {
+    font-size: 40px;
+    top: 50%;
+    left: 50%;
+}
+
+#remainingCount {
+    font-size: 20px;
+    top: 10%;
+    left: 10%;
+}   
+
+#reset {
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+
+.wrapperRecord {
+    width: 800px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#recordTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#records {
+    list-style: none;
+    background-color: white;
+}
+#records li {
+    width: 700px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 25px;
+}
