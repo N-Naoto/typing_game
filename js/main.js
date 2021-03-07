@@ -24,26 +24,12 @@ function setWord() {
 document.addEventListener('keydown',(e) => {
     if (flag === false) {
         if (e.key === ' ' || e.key === 'Enter') {
-            countDown = 3;
-            target.textContent = countDown;
-            setInterval(() => {
-                if (countDown <= 0) {
-                    return;
-                }
-                countDown--;
-                target.textContent = countDown; 
-            },1000)
-            
-            
-            setTimeout(() => {
-                console.log("3秒たったら実行"); 
-                startTime = performance.now();
-                if (isPlaying) {
-                    return;
-                }
-                isPlaying = true;
-                setWord();
-            }, 3000);
+            startTime = performance.now();
+            if (isPlaying) {
+                return;
+            }
+            isPlaying = true;
+            setWord();
         }
     }
 
