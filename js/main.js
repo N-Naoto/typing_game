@@ -22,15 +22,16 @@ function setWord() {
 document.addEventListener('keydown',(e) => {
     if (flag === false) {
         if (e.key === ' ' || e.key === 'Enter') {
-            flag = true
-            console.log(e.key)
-            startTime = performance.now()
             if (isPlaying) {
                 return
             }
-            
-            isPlaying = true
-            setWord()
+            target.textContent = '1'
+            setTimeout(() => {
+                flag = true
+                isPlaying = true
+                startTime = performance.now()
+                setWord()
+            }, 1000)
         }
     }
 
