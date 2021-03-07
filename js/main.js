@@ -1,9 +1,9 @@
-const words = ['baseball','tennis'] //,'golf','karate'
+const words = ['baseball','tennis','golf','karate']
 let word
 let endwords= []
 let loc
 let isPlaying = false
-let flag = false // タイムが出る画面になったらtrueになる。
+let flag = false // spaceとenterの制御
 let count=0
 
 const target = document.getElementById('target')
