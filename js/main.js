@@ -25,9 +25,9 @@ document.addEventListener('keydown',(e) => {
             if (isPlaying) {
                 return
             }
+            flag = true
             target.textContent = '1'
             setTimeout(() => {
-                flag = true
                 isPlaying = true
                 startTime = performance.now()
                 setWord()
