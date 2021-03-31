@@ -1,76 +1,85 @@
-const words = ['baseball','tennis','golf','karate']
-let word
-let endwords= []
-let loc
-let isPlaying = false
-let flag = false // spaceとenterの制御
-let count=0
+let scores, roundScore, activePlayer, gamePlaying;
 
-const target = document.getElementById('target')
-const result = document.getElementById('result')
-const remainingCount = document.getElementById('remainingCount')
-const records = document.getElementById('records')
+function init() {
+    activePlayer = 1
+    roundScore = 0
+    scores = [0,0]
+    gamePlaying = true
 
-function setWord() {
-    remainingCount.textContent = words.length
-    word = words.splice(Math.floor(Math.random() * words.length),1)[0]
-    target.textContent = word
-    endwords.push(word)
-    loc = 0
-} 
+    document.getElementById('dice-1').style.display = 'none'
+    document.getElementById('dice-2').style.display = 'none'
+    document.getElementById('score-1').textContent = 0
+    document.getElementById('score-2').textContent = 0
+    document.getElementById('points-1').textContent = 0
+    document.getElementById('points-2').textContent = 0
+    document.getElementById('name-1').textContent = 'player 1'
+    document.getElementById('name-2').textContent = 'player 2'
 
-document.addEventListener('keydown',(e) => {
-    if (flag === false) {
-        if (e.key === ' ' || e.key === 'Enter') {
-            if (isPlaying) {
-                return
-            }
-            flag = true
-            target.textContent = '1'
-            setTimeout(() => {
-                isPlaying = true
-                startTime = performance.now()
-                setWord()
-            }, 1000)
+    // player1だけactiveクラスを持つようにする
+    document.querySelector('.player-1-panel').classList.remove('active')
+    document.querySelector('.player-2-panel').classList.remove('active')
+    document.querySelector('.player-1-panel').classList.add('active')
+
+}
+
+document.querySelector('.btn-roll').addEventListener('click',() => {
+    if (gamePlaying) {
+        // サイコロの出た目を表示させる
+        let dice1 = Math.floor(Math.random()*6)+1
+        let dice2 = Math.floor(Math.random()*6)+1
+        document.getElementById('dice-1').style.display = 'block'
+        document.getElementById('dice-2').style.display = 'block'
+        document.getElementById('dice-1').src = '../../static/images/js_1/dice-'+ dice1 +'.png'
+        document.getElementById('dice-2').src = '../../static/images/js_1/dice-'+ dice2 +'.png'
+    
+        // 出た目を足してpointsに表示させる。
+        roundScore += dice1 + dice2
+        document.getElementById('points-' + activePlayer).textContent = roundScore
+
+        if (dice1 == 1 || dice2 == 1) {
+            document.getElementById('dice-1').style.display = 'none'
+            document.getElementById('dice-2').style.display = 'none' 
+            document.getElementById('points-' + activePlayer).textContent = 0
+
+            activePlayer === 1 ? activePlayer = 2 : activePlayer = 1
+            document.querySelector('.player-1-panel').classList.toggle('active')
+            document.querySelector('.player-2-panel').classList.toggle('active')
+            roundScore = 0
         }
     }
-
-    if (isPlaying) {
-        if(e.key === word[loc]) {
-            loc++
-            target.textContent = word.substring(loc)
-        }
-        if (word.length === loc) {
-            if(words.length === 0) {
-                endTime = performance.now()
-                time = ((endTime - startTime)/1000).toFixed(3)
-                result.textContent = '終わった！' + time + '秒です。'
-                remainingCount.textContent = ''
-                isPlaying = false
-                
-                count += 1
-                let li = document.createElement('li')
-                let a = document.createTextNode(count + '回目  ' + time + '秒')
-                li.appendChild(a)
-                records.appendChild(li)
-                return
-            }
-            setWord()
-        }
-    }
-
-    if (e.key === 'Escape') {
-        target.textContent = 'Space or Enter to start!'
-        result.textContent = ''
-        remainingCount.textContent = ''
-        loc = 0
-        isPlaying = false
-        startTime = 0
-        flag = false
-        for (let i=0; i<endwords.length; i++) {
-            words.push(endwords[i])
-        }
-        endwords = []
-    }
-
+    
 })
+
+document.querySelector('.btn-new').addEventListener('click',init)
+
+document.querySelector('.btn-hold').addEventListener('click',() => {
+    if (gamePlaying) {
+        let input = document.querySelector('.final-score').value;
+        
+        if(input) {
+            winningScore = input;
+        } else {
+            winningScore = 100;
+        }
+        // scoreを確定させる。
+        scores[activePlayer-1] += roundScore
+        document.getElementById('score-' + activePlayer).textContent = scores[activePlayer-1]
+        document.getElementById('points-' + activePlayer).textContent = 0
+        // サイコロを見えなくする。
+        document.getElementById('dice-1').style.display = 'none'
+        document.getElementById('dice-2').style.display = 'none' 
+    }
+
+    if (winningScore <= scores[activePlayer-1]) {
+        document.getElementById('name-' + activePlayer).textContent = 'Win!'
+        gamePlaying = false
+    } else {
+        // activePlayerを交換してactive状態も交換する
+        activePlayer === 1 ? activePlayer = 2 : activePlayer = 1
+        document.querySelector('.player-1-panel').classList.toggle('active')
+        document.querySelector('.player-2-panel').classList.toggle('active')
+        roundScore = 0
+    }
+})
+
+init()
